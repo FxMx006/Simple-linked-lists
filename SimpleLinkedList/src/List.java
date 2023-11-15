@@ -14,30 +14,32 @@ public class List implements ListInterface {
 
     @Override
     public void next() {
-        if (this.hasAccess()) {
+        if (!isEmpty() && hasAccess() && current.getNext() != null) {
             current = current.getNext();
+        } else {
+            current = null;
         }
     }
 
     @Override
     public void toFirst() {
-        if (!this.isEmpty()) {
+        if (!isEmpty()) {
             current = anchor;
         }
     }
 
     @Override
     public void toLast() {
-        if (!this.isEmpty()) {
+        if (!isEmpty()) {
             while (current.getNext() != null) {
-                this.next();
+                current = current.getNext();
             }
         }
     }
 
     @Override
     public Object getObject() {
-        if (this.hasAccess()) {
+        if (hasAccess()) {
             return current.getContent();
         } else {
             return null;
@@ -46,7 +48,7 @@ public class List implements ListInterface {
 
     @Override
     public void setObject(Object pObject) {
-        if (this.hasAccess() && pObject != null) {
+        if (hasAccess() && pObject != null) {
             current.setContent(pObject);
         }
     }
@@ -54,7 +56,7 @@ public class List implements ListInterface {
     @Override
     public void append(Object pObject) {
         if (pObject != null) {
-            if (this.isEmpty()) {
+            if (isEmpty()) {
                 anchor = new ListElement(pObject, null);
             } else {
                 ListElement temp = anchor;
@@ -91,7 +93,7 @@ public class List implements ListInterface {
     @Override
     public void concat(List pList) {
         if (pList != null && !pList.isEmpty()) {
-            if (this.isEmpty()) {
+            if (isEmpty()) {
                 anchor = pList.anchor;
             } else {
                 ListElement temp = anchor;
@@ -102,6 +104,7 @@ public class List implements ListInterface {
             }
         }
     }
+
 
     @Override
     public void remove() {
